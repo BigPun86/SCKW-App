@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import org.jsoup.Jsoup;
 
@@ -60,17 +59,17 @@ public class AktiveHerrenNews extends Fragment {
             }
         });
 
-        TextView newsTitle = (TextView) rootView.findViewById(R.id.newsTitle);
-        newsTitle.onTouchEvent(new View.OnTouchListener()) {
-
-            @Override
-            public boolean onTouch (View arg0){
-                obj = new HandleXML(finalUrl);
-                obj.fetchXML();
-
-                while (obj.parsingComplete) ;
-            }
-        })
+//        TextView newsTitle = (TextView) rootView.findViewById(R.id.newsTitle);
+//        newsTitle.onTouchEvent(new View.OnTouchListener()) {
+//
+//            @Override
+//            public boolean onTouch (View arg0, MotionEvent mE){
+//                obj = new HandleXML(finalUrl);
+//                obj.fetchXML();
+//
+//                while (obj.parsingComplete) ;
+//            }
+//        });
 
         Button b2 = (Button) rootView.findViewById(R.id.b2);
         b2.setOnClickListener(new View.OnClickListener() {
