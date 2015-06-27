@@ -3,7 +3,6 @@
     package="adelgrimm.sckw_app"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -20,11 +19,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".HomeFragment"/>
-        <activity android:name=".NewsFragmentActivity"/>
-        <activity android:name="liveTicker.LiveTickerActivity"/>
-        <activity android:name=".ImpressumFragment"/>
-        <activity android:name=".WhatsHotFragment"/>
+
     </application>
 
 </manifest>

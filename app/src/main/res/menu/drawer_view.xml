@@ -1,0 +1,32 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home_fragment"
+            android:checked="true"
+            android:icon="@drawable/ic_one"
+            android:title="@string/HOME"/>
+        <item
+            android:id="@+id/nav_news_fragment"
+            android:icon="@drawable/ic_two"
+            android:title="@string/NEWS"/>
+        <item
+            android:id="@+id/nav_liveTicker_fragment"
+            android:icon="@drawable/ic_three"
+            android:title="@string/LIVE_TICKER"/>
+    </group>
+
+    <item android:title="Sub items">
+        <menu>
+            <item
+                android:id="@+id/nav_impressum_fragment"
+                android:icon="@drawable/ic_dashboard_black_24dp"
+                android:title="@string/IMPRESSUM"/>
+            <item
+                android:id="@+id/nav_whatsHot_fragment"
+                android:icon="@drawable/ic_forum_black_24dp"
+                android:title="@string/WHATS_HOT"/>
+        </menu>
+    </item>
+
+</menu>

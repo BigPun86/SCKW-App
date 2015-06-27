@@ -1,18 +1,18 @@
 package adelgrimm.sckw_app;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.viewpagerindicator.TitlePageIndicator;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -60,15 +60,21 @@ public class NewsFragmentActivity extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.news_layout, container, false);
-        ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewpager);
+        ViewPager viewPager = (ViewPager) view.findViewById(R.id.vpPager);
         adapterViewPager = new ViewPageAdapter(getChildFragmentManager());
-
-        PagerTabStrip pagerTabStrip = (PagerTabStrip) view.findViewById(R.id.pager_header);
-        pagerTabStrip.setDrawFullUnderline(true);
-        pagerTabStrip.setTabIndicatorColor(Color.BLUE);
-
+        viewPager.setClipToPadding(false);
+        viewPager.setPageMargin(12);
 
         viewPager.setAdapter(adapterViewPager);
+
+//        //Bind the title indicator to the adapter
+//        TitlePageIndicator titleIndicator = (TitlePageIndicator) view.findViewById(R.id.titles);
+//        titleIndicator.setViewPager(viewPager);
+        // ViewPager Indicator
+        TitlePageIndicator titleIndicator = (TitlePageIndicator) view.findViewById(R.id.indicator);
+//        titleIndicator.setFades(false);
+        titleIndicator.setViewPager(viewPager);
+
 
         // viewPager.setPageTransformer(true, new CardTransformer(0.7f));
         viewPager.setPageTransformer(false, new ViewPager.PageTransformer() {
@@ -82,7 +88,7 @@ public class NewsFragmentActivity extends Fragment {
         });
 
         // Attach the page change listener inside the activity
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        titleIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             // This method will be invoked when a new page becomes selected.
             @Override
