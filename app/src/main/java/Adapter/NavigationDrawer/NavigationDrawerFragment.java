@@ -1,4 +1,4 @@
-package Adapter;
+package Adapter.NavigationDrawer;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
