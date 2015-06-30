@@ -11,4 +11,8 @@
     <string name="WHATS_HOT">What\'s Hot</string>
     <string name="action_example">Example action</string>
 
+
+    <string name="draw_selector_on_top">Draw selector on top</string>
+    <string name="use_selector_as_background">Use selector as background</string>
+
 </resources>

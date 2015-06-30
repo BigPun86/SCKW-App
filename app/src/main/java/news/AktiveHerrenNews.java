@@ -9,12 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import org.jsoup.Jsoup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import Adapter.ListView.CustomAdapter;
+import adapter.listview.CustomAdapter;
 import adelgrimm.sckw_app.R;
 
 /**
@@ -23,21 +23,35 @@ import adelgrimm.sckw_app.R;
 public class AktiveHerrenNews extends Fragment {
 
 
+    static Bundle args = new Bundle();
     TextView title, link;
     ListView lv;
     SwipeRefreshLayout mSwipeRefreshLayout;
     ArrayList<String> strArr;
     ArrayAdapter<String> adapter;
-    private String finalUrl = "http://sckw.de/rss/blog/Aktive";
-    private HandleXML obj;
+    List<String> newsTitel;
+    String[] newsText;
 
-    public static String html2text(String html) {
-        return Jsoup.parse(html).text();
+    public static AktiveHerrenNews newInstance(List<String> newsTitle, String[] newsText) {
+        AktiveHerrenNews f = new AktiveHerrenNews();
+
+        args.putStringArrayList("Titel", (ArrayList<String>) newsTitle);
+        args.putStringArray("NewsText", newsText);
+        f.setArguments(args);
+        return f;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (args != null) {
+            newsTitel = args.getStringArrayList("Titel");
+            newsText = args.getStringArray("NewsText");
+        } else {
+            Toast.makeText(getActivity(), "No Data args!", Toast.LENGTH_LONG).show();
+        }
+
     }
 
 
@@ -45,6 +59,7 @@ public class AktiveHerrenNews extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final View rootView = inflater.inflate(R.layout.aktive_news_layout, container, false);
+
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.activity_main_swipe_refresh_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -69,13 +84,12 @@ public class AktiveHerrenNews extends Fragment {
 
     private void fetchNews() {
 
-        obj = new HandleXML(finalUrl);
-        obj.fetchXML();
-
-        while (obj.parsingComplete) ;
-
-        String[] title = obj.getTitle();
-        lv.setAdapter(new CustomAdapter(getActivity(), title));
+        String[] newsTitelArray = newsTitel.toArray(new String[newsTitel.size()]);
+        String[] newsTextArray = newsText;
+        lv.setAdapter(new CustomAdapter(getActivity(), newsTitelArray, newsTextArray));
         mSwipeRefreshLayout.setRefreshing(false);
+
     }
+
+
 }

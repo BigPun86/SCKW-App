@@ -1,31 +1,16 @@
 package adelgrimm.sckw_app;
 
 import android.annotation.SuppressLint;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.viewpagerindicator.TitlePageIndicator;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 
 import news.AktiveHerrenNews;
 import news.JuniorenNews;
@@ -42,14 +27,6 @@ public class NewsFragmentActivity extends Fragment {
     // Tab titles
     private String[] tabs = {"Vereins News", "Aktiven News", "Junioren News"};
 
-    public static NewsFragmentActivity newInstance(int page, String title) {
-        NewsFragmentActivity newsFragmentActivity = new NewsFragmentActivity();
-        Bundle args = new Bundle();
-        args.putInt("someInt", page);
-        args.putString("someTitle", title);
-        newsFragmentActivity.setArguments(args);
-        return newsFragmentActivity;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -111,11 +88,6 @@ public class NewsFragmentActivity extends Fragment {
         return view;
     }
 
-    public void readWebpage(View view) {
-        RequestTask task = new RequestTask();
-        task.execute("http://www.google.com");
-
-    }
 
     public static class ViewPageAdapter extends FragmentPagerAdapter {
         private static int NUM_ITEMS = 3;
@@ -148,64 +120,24 @@ public class NewsFragmentActivity extends Fragment {
         // Returns the page title for the top indicator
         @Override
         public CharSequence getPageTitle(int position) {
-            return "Page " + position;
-        }
-
-    }   // newInstance constructor for creating fragment with arguments
-
-    public class RequestTask extends AsyncTask<String, Void, String> {
-
-        @Override
-// username, password, message, mobile
-        protected String doInBackground(String... url) {
-            // constants
-            int timeoutSocket = 5000;
-            int timeoutConnection = 5000;
-
-            HttpParams httpParameters = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
-            HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
-            HttpClient client = new DefaultHttpClient(httpParameters);
-
-            HttpGet httpget = new HttpGet(url[0]);
-
-            try {
-                HttpResponse getResponse = client.execute(httpget);
-                final int statusCode = getResponse.getStatusLine().getStatusCode();
-
-                if (statusCode != HttpStatus.SC_OK) {
-                    Log.w("MyApp", "Download Error: " + statusCode + "| for URL: " + url);
-                    return null;
-                }
-
-                String line = "";
-                StringBuilder total = new StringBuilder();
-
-                HttpEntity getResponseEntity = getResponse.getEntity();
-
-                BufferedReader reader = new BufferedReader(new InputStreamReader(getResponseEntity.getContent()));
-
-                while ((line = reader.readLine()) != null) {
-                    total.append(line);
-                }
-
-                line = total.toString();
-                return line;
-            } catch (Exception e) {
-                Log.w("MyApp", "Download Exception : " + e.toString());
+            String actualPage;
+            switch (position) {
+                case 0:
+                    actualPage = "Vereins News";
+                    return actualPage;
+                case 1:
+                    actualPage = "Aktiven News";
+                    return actualPage;
+                case 2:
+                    actualPage = "Junioren News";
+                    return actualPage;
+                default:
+                    actualPage = "NEWS";
+                    return actualPage;
             }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            VereinsNews fragment = new VereinsNews();
-            Bundle args = new Bundle();
-            args.putString("RESULT", result);
-            fragment.setArguments(args);
-
 
         }
+
     }
 
     /**

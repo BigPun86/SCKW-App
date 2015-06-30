@@ -4,7 +4,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,24 +14,23 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
 import liveTicker.LiveTickerActivity;
+import news.AktiveHerrenNews;
+import news.HandleXML;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String MY_NEWS_TITEL = "TEST";
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
-
     private NavigationView nvDrawer;
+
+    //TODO
     private ActionBarDrawerToggle drawerToggle;
-//    /**
-//     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-//     */
-//    private NavigationDrawerFragment mNavigationDrawerFragment;
-//
-//    /**
-//     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-//     */
-//    private CharSequence mTitle;
+    private String finalUrl = "http://sckw.de/rss/blog/Aktive";
+    private HandleXML obj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +53,41 @@ public class MainActivity extends AppCompatActivity {
         ab.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         ab.setDisplayHomeAsUpEnabled(true);
 
+
         // Find our drawer view
         nvDrawer = (NavigationView) findViewById(R.id.nvView);
         // Setup drawer view
         setupDrawerContent(nvDrawer);
 
+        setNewsData();
+
     }
+
+    private void setNewsData() {
+
+        Bundle bundle = new Bundle();
+//        bundle.putSerializable(TAG_MY_CLASS, myClass);
+        obj = new HandleXML(finalUrl);
+        obj.fetchXML();
+
+        while (obj.parsingComplete) ;
+
+
+        bundle.putStringArrayList("Titel", (ArrayList<String>) obj.getList());
+        bundle.putStringArray("NewsText", obj.getDescription());
+
+//        NewsFragmentActivity newsFragmentActivity = new NewsFragmentActivity();
+//        newsFragmentActivity.setArguments(bundle);
+        AktiveHerrenNews aktiveFrag = AktiveHerrenNews.newInstance(obj.getList(), obj.getDescription());
+        aktiveFrag.setArguments(bundle);
+
+//
+//        Intent i = new Intent(MainActivity.this, TheNews.class);
+//        //assign the bundle to the intent
+//        i.putExtras(bundle);
+
+    }
+
 
     private ActionBarDrawerToggle setupDrawerToggle() {
         return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open, R.string.drawer_close);
@@ -80,13 +108,14 @@ public class MainActivity extends AppCompatActivity {
         // position
         Fragment fragment = null;
 
-        Class fragmentClass;
+        Class fragmentClass = null;
         switch (menuItem.getItemId()) {
             case R.id.nav_home_fragment:
                 fragmentClass = HomeFragment.class;
                 break;
             case R.id.nav_news_fragment:
                 fragmentClass = NewsFragmentActivity.class;
+
                 break;
             case R.id.nav_liveTicker_fragment:
                 fragmentClass = LiveTickerActivity.class;
@@ -101,9 +130,18 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack so the user can navigate back
+        transaction.replace(R.id.flContent, fragment);
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
+//        // Insert the fragment by replacing any existing fragment
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
 
         // Highlight the selected item, update the title, and close the drawer
         menuItem.setChecked(true);
@@ -138,6 +176,15 @@ public class MainActivity extends AppCompatActivity {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
         drawerToggle.syncState();
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+
     }
 
     @Override

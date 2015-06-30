@@ -5,20 +5,6 @@
               android:layout_height="fill_parent"
               android:orientation="vertical">
 
-    <com.viewpagerindicator.TitlePageIndicator
-        android:id="@+id/indicator"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="#673AB7"
-        android:padding="10dip"
-        android:textColor="#2FB3E3"
-        app:footerColor="#2FB3E3"
-        app:footerIndicatorHeight="3dp"
-        app:footerIndicatorStyle="underline"
-        app:footerLineHeight="1dp"
-        app:selectedBold="true"
-        app:selectedColor="#FFFFFF"
-        />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vpPager"
@@ -27,4 +13,18 @@
         android:layout_weight="1"
         />
 
+    <com.viewpagerindicator.TitlePageIndicator
+        android:id="@+id/indicator"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/sckwLogoDark"
+        android:padding="10dip"
+        android:textColor="#FFFFFF"
+        app:footerColor="@color/sckwLogoAccent"
+        app:footerIndicatorHeight="5dp"
+        app:footerIndicatorStyle="underline"
+        app:footerLineHeight="1dp"
+        app:selectedBold="true"
+        app:selectedColor="#FFFFFF"
+        />
 </LinearLayout>
