@@ -6,13 +6,11 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import adapter.listview.CustomAdapter;
 import adelgrimm.sckw_app.R;
@@ -27,16 +25,15 @@ public class AktiveHerrenNews extends Fragment {
     TextView title, link;
     ListView lv;
     SwipeRefreshLayout mSwipeRefreshLayout;
-    ArrayList<String> strArr;
-    ArrayAdapter<String> adapter;
-    List<String> newsTitel;
-    String[] newsText;
+    ArrayList<String> newsTitle;
+    ArrayList<String> newsDesc;
 
-    public static AktiveHerrenNews newInstance(List<String> newsTitle, String[] newsText) {
+
+    public static AktiveHerrenNews newInstance(ArrayList<String> newsTitle, ArrayList<String> newsDesc) {
+
         AktiveHerrenNews f = new AktiveHerrenNews();
-
-        args.putStringArrayList("Titel", (ArrayList<String>) newsTitle);
-        args.putStringArray("NewsText", newsText);
+        args.putStringArrayList("Titel", newsTitle);
+        args.putStringArrayList("NewsText", newsDesc);
         f.setArguments(args);
         return f;
     }
@@ -46,8 +43,8 @@ public class AktiveHerrenNews extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (args != null) {
-            newsTitel = args.getStringArrayList("Titel");
-            newsText = args.getStringArray("NewsText");
+            newsTitle = args.getStringArrayList("Titel");
+            newsDesc = args.getStringArrayList("NewsText");
         } else {
             Toast.makeText(getActivity(), "No Data args!", Toast.LENGTH_LONG).show();
         }
@@ -84,9 +81,7 @@ public class AktiveHerrenNews extends Fragment {
 
     private void fetchNews() {
 
-        String[] newsTitelArray = newsTitel.toArray(new String[newsTitel.size()]);
-        String[] newsTextArray = newsText;
-        lv.setAdapter(new CustomAdapter(getActivity(), newsTitelArray, newsTextArray));
+        lv.setAdapter(new CustomAdapter(getActivity(), newsTitle, newsDesc));
         mSwipeRefreshLayout.setRefreshing(false);
 
     }

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="list_divider">#d9d9d9</color>
-    <color name="list_row_start_color">#356CA9</color>
-    <color name="list_row_end_color">#C43248</color>
+    <color name="list_row_start_color">#204269</color>
+    <color name="list_row_end_color">#7C222F</color>
     <color name="list_row_hover_start_color">#ebeef0</color>
     <color name="list_row_hover_end_color">#ebeef0</color>
 
     <color name="sckwLogoPrimary">#356CA9</color>
     <color name="sckwLogoDark">#204269</color>
     <color name="sckwLogoAccent">#C33248</color>
+    <color name="sckwLogoAccentDark">#7C222F</color>
 
 </resources>

@@ -19,10 +19,13 @@ import java.util.ArrayList;
 import liveTicker.LiveTickerActivity;
 import news.AktiveHerrenNews;
 import news.HandleXML;
+import news.TheNews;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String MY_NEWS_TITEL = "TEST";
+    public static ArrayList<String> newsTitles = new ArrayList<String>();
+    public static ArrayList<String> newsText = new ArrayList<String>();
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private NavigationView nvDrawer;
@@ -65,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setNewsData() {
 
+
         Bundle bundle = new Bundle();
 //        bundle.putSerializable(TAG_MY_CLASS, myClass);
         obj = new HandleXML(finalUrl);
@@ -73,17 +77,23 @@ public class MainActivity extends AppCompatActivity {
         while (obj.parsingComplete) ;
 
 
-        bundle.putStringArrayList("Titel", (ArrayList<String>) obj.getList());
-        bundle.putStringArray("NewsText", obj.getDescription());
+        newsTitles = obj.getListTitles();
+        newsText = obj.getListDesc();
+        TheNews.setNewsTitleValue(newsTitles);
+        TheNews.setNewsDescValue(newsText);
+        bundle.putStringArrayList("Titel", newsTitles);
+        bundle.putStringArrayList("NewsText", newsText);
+
 
 //        NewsFragmentActivity newsFragmentActivity = new NewsFragmentActivity();
 //        newsFragmentActivity.setArguments(bundle);
-        AktiveHerrenNews aktiveFrag = AktiveHerrenNews.newInstance(obj.getList(), obj.getDescription());
-        aktiveFrag.setArguments(bundle);
-
-//
+        AktiveHerrenNews aktiveFrag = AktiveHerrenNews.newInstance(newsTitles, newsText);
+        TheNews theNews = TheNews.newInstance(newsTitles, newsText);
 //        Intent i = new Intent(MainActivity.this, TheNews.class);
-//        //assign the bundle to the intent
+
+        aktiveFrag.setArguments(bundle);
+        theNews.setArguments(bundle);
+        //assign the bundle to the intent
 //        i.putExtras(bundle);
 
     }
